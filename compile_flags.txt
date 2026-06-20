@@ -1,0 +1,5 @@
+-I/home/opapouts/local/include
+-Wall
+-Wextra
+-Werror
+-std=c17

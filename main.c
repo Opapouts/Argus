@@ -1,31 +1,36 @@
 #include <stdio.h>
 #include <curl/curl.h>
-#include "raylib.h"
 
-int main(void)
-{
-    // 1. Test libcurl
-    // This will print the current version of curl installed on the machine
-    printf("--- Testing libcurl ---\n");
+int main(void) {
+    /* Initialize libcurl globally */
+    curl_global_init(CURL_GLOBAL_DEFAULT);
+
+    CURL *curl = curl_easy_init();
+    if (!curl) {
+        fprintf(stderr, "Failed to initialize curl handle\n");
+        return 1;
+    }
+
     printf("libcurl version: %s\n\n", curl_version());
 
-    // 2. Test Raylib
-    // This will briefly open a small window and close it immediately 
-    // to prove the GPU/graphics linker works.
-    printf("--- Testing Raylib ---\n");
-    InitWindow(400, 200, "Makefile Test");
-    
-    if (IsWindowReady())
-    {
-        printf("Raylib successfully initialized and linked!\n");
-        CloseWindow();
-    }
-    else
-    {
-        printf("Error: Raylib window could not be created.\n");
-        return (1);
+    /* Set the URL to fetch -- a simple, lightweight endpoint */
+    curl_easy_setopt(curl, CURLOPT_URL, "https://example.com");
+
+    /* Follow redirects if any */
+    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+
+    /* Perform the request */
+    CURLcode res = curl_easy_perform(curl);
+
+    if (res != CURLE_OK) {
+        fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+    } else {
+        printf("Request succeeded! libcurl is working correctly.\n");
     }
 
-    printf("\nSuccess! Both libraries are fully accessible.\n");
-    return (0);
+    /* Cleanup */
+    curl_easy_cleanup(curl);
+    curl_global_cleanup();
+
+    return (res == CURLE_OK) ? 0 : 1;
 }
