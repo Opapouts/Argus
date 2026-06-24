@@ -1,4 +1,5 @@
 #include "../../includes/data_ingestion.h"
+#include "../../includes/utils.h"
 
 void	custom_write(char *str) {
 	while (*str)
@@ -55,8 +56,6 @@ void	webscrape(void) {
 	free(chunk.data);
 	curl_global_cleanup();
 }
-//We receive the information in this format, 
-//{"time":1781976265,"states":[["39de4f","TVF38EU ","France",1781976265,1781976265,7.6636,46.0714,11567.16,false,226.27,299.71,0,null,12146.28,"1000",false,0] ...after this there are other flight information
 
 int	main(void)
 {
