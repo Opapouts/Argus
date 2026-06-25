@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include <stdint.h>
+#include "cJSON.h"
 
 typedef	struct	s_memory
 {
@@ -13,7 +14,7 @@ typedef	struct	s_memory
 	size_t	size;
 }		t_memory;
 
-void	webscrape(void);
+char *webscrape(void);
 /*
  * I should use a linked list for this project right? The first plane points to the next etc.
  * If one fields is null I just ignore that plane entirely. What are the info I need for each plane?

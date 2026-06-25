@@ -32,12 +32,11 @@ static size_t	callback(void *contents, size_t size, size_t n, void *userp) {
 	return (real_size);
 }
 
-void	webscrape(void) {
+char	*webscrape(void) {
 	curl_global_init(CURL_GLOBAL_DEFAULT);
 	CURL	*curl = curl_easy_init();
 
 	t_memory chunk = {.data = malloc(1)};
-	
 	if (curl) {
 		curl_easy_setopt(curl, CURLOPT_URL, "https://opensky-network.org/api/states/all");
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callback);
@@ -46,19 +45,10 @@ void	webscrape(void) {
 
 		CURLcode res = curl_easy_perform(curl);
 		if (res != CURLE_OK)
-			fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
-		else {
-			printf("Received %zu bytes:\n", chunk.size);
-			printf("%.500s...\n", chunk.data);
-		}
+			fprintf(stderr, "curl_easy_perform() error: %s\n", curl_easy_strerror(res));
+		else
+			return (chunk.data);
 		curl_easy_cleanup(curl);
 	}
-	free(chunk.data);
-	curl_global_cleanup();
-}
-
-int	main(void)
-{
-	webscrape();
-	return (0);
+	return (NULL);
 }
