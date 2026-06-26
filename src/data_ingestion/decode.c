@@ -1,5 +1,6 @@
 #include "../../includes/data_ingestion.h"
 #include "../../includes/utils.h"
+#include "cJSON.h"
 
 //We save the API result at the t_memory struct. We need to create a function that
 //initialise the main struct and have a pointer to the t_memory and the new t_plane

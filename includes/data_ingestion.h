@@ -2,11 +2,11 @@
 #define DATA_INGESTION_H
 
 #include <curl/curl.h>
-#include <string.h>
 #include <stdbool.h>
+#include <string.h>
 #include <time.h>
 #include <stdint.h>
-#include "cJSON.h"
+#include <stdlib.h>
 
 typedef	struct	s_memory
 {
@@ -24,7 +24,7 @@ typedef	struct	s_identity
 {
 	char		icao24[7];//Plane id 
 	char		callsign[9];
-	char		*origin_country[32];
+	char		origin_country[32];
 }		t_identity;//48 bytes
 
 typedef	struct	s_time

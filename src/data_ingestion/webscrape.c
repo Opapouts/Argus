@@ -1,12 +1,6 @@
 #include "../../includes/data_ingestion.h"
 #include "../../includes/utils.h"
 
-void	custom_write(char *str) {
-	while (*str)
-		write(2, str++, 1);
-	write(2, "\n", 1);
-}
-
 /*
  *contents ->the data returned from the request
  *size ->size of one element, and since its always one byte size = 1
