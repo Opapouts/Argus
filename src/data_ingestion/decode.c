@@ -1,6 +1,6 @@
 #include "../../includes/data_ingestion.h"
 #include "../../includes/utils.h"
-#include "cJSON.h"
+#include "../../vendor/cJSON/cJSON.h"
 
 //We save the API result at the t_memory struct. We need to create a function that
 //initialise the main struct and have a pointer to the t_memory and the new t_plane
@@ -34,13 +34,53 @@ void	parse_opensky_data(const char *json_string, t_central *central) {
 			cJSON	*callsign = cJSON_GetArrayItem(flight, 1);
 			if (icao24 != NULL && cJSON_IsString(icao24) &&
 				callsign != NULL && cJSON_IsString(callsign)) {
-				t_plane *new_plane = malloc(sizeof(t_plane));//add securities
-				strncpy(new_plane->identity.icao24, icao24->valuestring, 6);
-				new_plane->identity.icao24[6] = '\0';
-				strncpy(new_plane->identity.callsign, callsign->valuestring, 8);
-				new_plane->identity.callsign[8] = '\0';
-				//We need the linked lists functions
+				t_plane *node = new_plane(icao24->valuestring);
+				if (!node)
+					continue ;
+				strncpy(node->identity.icao24, icao24->valuestring, 6);
+				strncpy(node->identity.callsign, callsign->valuestring, 8);
+				node->identity.callsign[8] = '\0';
+				add_plane_back(&central->planes, node);
+			}
+		}
+	}
+	cJSON_Delete(root);
+}
+
+/*static void	print_things(t_central *central)
+{
+	t_plane	*tmp;
+
+	tmp = central->planes;
+	while (tmp)
+	{
+		printf("icao24-> %s				callsign-> %s\n", tmp->identity.icao24, tmp->identity.callsign);
+		tmp = tmp->next;
+	}
+}*/
+
+static void	free_planes(t_plane *plane)
+{
+	t_plane *tmp = plane;
+	while (tmp)
+	{
+		plane = tmp->next;
+		free(tmp);
+		tmp = plane;
+	}
+}
 
 
+int	main(void)
+{
+	char	*data;
+	t_central	central;
 
-
+	central.planes = NULL;
+	data = webscrape();
+	parse_opensky_data(data, &central);
+	//print_things(&central);
+	free_planes(central.planes);
+	free(data);
+	return (0);
+}

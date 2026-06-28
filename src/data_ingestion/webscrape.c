@@ -1,5 +1,6 @@
 #include "../../includes/data_ingestion.h"
 #include "../../includes/utils.h"
+#include "../../vendor/local_curl/include/curl/curl.h"
 
 /*
  *contents ->the data returned from the request
@@ -41,8 +42,11 @@ char	*webscrape(void) {
 		if (res != CURLE_OK)
 			fprintf(stderr, "curl_easy_perform() error: %s\n", curl_easy_strerror(res));
 		else
+		{
+			curl_easy_cleanup(curl);//Pas sur de ces 2 fonctions
+			curl_global_cleanup();
 			return (chunk.data);
-		curl_easy_cleanup(curl);
+		}
 	}
 	return (NULL);
 }

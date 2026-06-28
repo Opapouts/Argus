@@ -1,12 +1,12 @@
 #ifndef DATA_INGESTION_H
 #define DATA_INGESTION_H
 
-#include <curl/curl.h>
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 typedef	struct	s_memory
 {
@@ -59,11 +59,13 @@ typedef	struct	s_plane
 
 }		t_plane;//112 bytes (For 10.000 active planes this linked list will consume
 			//~1.1 Megabytes of RAM
-
+t_plane	*new_plane(char *icao24);
+void	add_plane_back(t_plane **list, t_plane *node);
 typedef	struct	s_central
 {
 	t_plane		*planes;
-	t_memory	*memory;
+	t_memory	*memory;//Pas necessaire pour l'instant
 }		t_central;
 
+void	parse_opensky_data(const char *json_string, t_central *central);
 #endif

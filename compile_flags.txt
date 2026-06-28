@@ -1,5 +1,5 @@
--I/home/opapouts/local/include
--I/home/opapouts/vendor/cJSON
+-I/vendor/local_curl
+-I/vendor/cJSON
 -Wall
 -Wextra
 -Werror
