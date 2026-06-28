@@ -1,6 +1,7 @@
 #ifndef DATA_INGESTION_H
 #define DATA_INGESTION_H
 
+#include "../vendor/cJSON/cJSON.h"
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
@@ -15,10 +16,6 @@ typedef	struct	s_memory
 }		t_memory;
 
 char *webscrape(void);
-/*
- * I should use a linked list for this project right? The first plane points to the next etc.
- * If one fields is null I just ignore that plane entirely. What are the info I need for each plane?
- */
 
 typedef	struct	s_identity
 {
@@ -61,11 +58,25 @@ typedef	struct	s_plane
 			//~1.1 Megabytes of RAM
 t_plane	*new_plane(char *icao24);
 void	add_plane_back(t_plane **list, t_plane *node);
+
 typedef	struct	s_central
 {
 	t_plane		*planes;
 	t_memory	*memory;//Pas necessaire pour l'instant
 }		t_central;
+
+typedef	struct	s_cJSON
+{
+	cJSON	*root;
+	cJSON	*states_array;
+	cJSON	*flight;
+	cJSON	*icao24;
+	cJSON	*callsign;
+	cJSON	*origin_country;
+	cJSON	*time_position;
+	cJSON	*last_contact;
+	cJSON	*longitude;
+}		t_cJSON;
 
 void	parse_opensky_data(const char *json_string, t_central *central);
 #endif

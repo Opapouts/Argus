@@ -1,6 +1,5 @@
 #include "../../includes/data_ingestion.h"
 #include "../../includes/utils.h"
-#include "../../vendor/cJSON/cJSON.h"
 
 //We save the API result at the t_memory struct. We need to create a function that
 //initialise the main struct and have a pointer to the t_memory and the new t_plane
@@ -15,36 +14,38 @@
 //  ]
 //}
 //The API can return null for some fields so we have to be carefull of that.
-
+//We will create a cJSON struct to avoid having 40 cJSON variables.
+//Is there a better way to do that?
+//To do->Create a function that will check if any cJSON is null/string/numbers etc.
 void	parse_opensky_data(const char *json_string, t_central *central) {
-	cJSON	*root;
-	cJSON	*states_array;
+	t_cJSON	cJSON_struct;
 	int	nbr_of_planes;
 
-	root = cJSON_Parse(json_string);
-	if (!root)
+	cJSON_struct.root = cJSON_Parse(json_string);
+	if (!cJSON_struct.root)
 		return (custom_write("Error Parsing JSON\n"));
-	states_array = cJSON_GetObjectItemCaseSensitive(root, "states");
-	if (cJSON_IsArray(states_array))
+	cJSON_struct.states_array = cJSON_GetObjectItemCaseSensitive(cJSON_struct.root, "states");
+	if (!cJSON_struct.states_array || !cJSON_IsArray(cJSON_struct.states_array))
+		return (cJSON_Delete(cJSON_struct.root));
+
+	nbr_of_planes = cJSON_GetArraySize(cJSON_struct.states_array);
+	for (int i = 0; i < nbr_of_planes; i++)
 	{
-		nbr_of_planes = cJSON_GetArraySize(states_array);
-		for (int i = 0; i < nbr_of_planes; i++) {
-			cJSON	*flight = cJSON_GetArrayItem(states_array, i);
-			cJSON	*icao24 = cJSON_GetArrayItem(flight, 0);
-			cJSON	*callsign = cJSON_GetArrayItem(flight, 1);
-			if (icao24 != NULL && cJSON_IsString(icao24) &&
-				callsign != NULL && cJSON_IsString(callsign)) {
-				t_plane *node = new_plane(icao24->valuestring);
-				if (!node)
-					continue ;
-				strncpy(node->identity.icao24, icao24->valuestring, 6);
-				strncpy(node->identity.callsign, callsign->valuestring, 8);
-				node->identity.callsign[8] = '\0';
-				add_plane_back(&central->planes, node);
-			}
+		cJSON_struct.flight = cJSON_GetArrayItem(cJSON_struct.states_array, i);
+		cJSON_struct.icao24 = cJSON_GetArrayItem(cJSON_struct.flight, 0);
+		cJSON_struct.callsign = cJSON_GetArrayItem(cJSON_struct.flight, 1);
+		if (cJSON_struct.icao24 != NULL && cJSON_IsString(cJSON_struct.icao24) &&
+			cJSON_struct.callsign != NULL && cJSON_IsString(cJSON_struct.callsign)) {
+			t_plane *node = new_plane(cJSON_struct.icao24->valuestring);
+			if (!node)
+				continue ;
+			strncpy(node->identity.icao24, cJSON_struct.icao24->valuestring, 6);
+			strncpy(node->identity.callsign, cJSON_struct.callsign->valuestring, 8);
+			node->identity.callsign[8] = '\0';
+			add_plane_back(&central->planes, node);
 		}
 	}
-	cJSON_Delete(root);
+	cJSON_Delete(cJSON_struct.root);
 }
 
 /*static void	print_things(t_central *central)
