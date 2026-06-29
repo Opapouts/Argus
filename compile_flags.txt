@@ -1,5 +1,6 @@
--I/vendor/local_curl
--I/vendor/cJSON
+-I./vendor/local_curl
+-I./vendor/cJSON
+-I./vendor/raylib/src
 -Wall
 -Wextra
 -Werror
