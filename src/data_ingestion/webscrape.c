@@ -28,25 +28,25 @@ static size_t	callback(void *contents, size_t size, size_t n, void *userp) {
 }
 
 char	*webscrape(void) {
-	curl_global_init(CURL_GLOBAL_DEFAULT);
 	CURL	*curl = curl_easy_init();
+	if (!curl)
+		return (NULL);
 
 	t_memory chunk = {.data = malloc(1)};
-	if (curl) {
-		curl_easy_setopt(curl, CURLOPT_URL, "https://opensky-network.org/api/states/all");
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callback);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);
-		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+	if (!chunk.data)
+		return (curl_easy_cleanup(curl), NULL);
+	curl_easy_setopt(curl, CURLOPT_URL, "https://opensky-network.org/api/states/all");
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callback);
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);
+	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 
-		CURLcode res = curl_easy_perform(curl);
-		if (res != CURLE_OK)
-			fprintf(stderr, "curl_easy_perform() error: %s\n", curl_easy_strerror(res));
-		else
-		{
-			curl_easy_cleanup(curl);//Pas sur de ces 2 fonctions
-			curl_global_cleanup();
-			return (chunk.data);
-		}
+	CURLcode res = curl_easy_perform(curl);
+	curl_easy_cleanup(curl);
+	if (res != CURLE_OK)
+	{
+		free(chunk.data);
+		fprintf(stderr, "curl_easy_perform() error: %s\n", curl_easy_strerror(res));
+		return (NULL);
 	}
-	return (NULL);
+	return (chunk.data);
 }

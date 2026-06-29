@@ -1,7 +1,6 @@
 #ifndef DATA_INGESTION_H
 #define DATA_INGESTION_H
-
-#include "../vendor/cJSON/cJSON.h"
+#define DEFAULT_PLANE_ALTITUDE 10000
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
@@ -65,18 +64,6 @@ typedef	struct	s_central
 	t_memory	*memory;//Pas necessaire pour l'instant
 }		t_central;
 
-typedef	struct	s_cJSON
-{
-	cJSON	*root;
-	cJSON	*states_array;
-	cJSON	*flight;
-	cJSON	*icao24;
-	cJSON	*callsign;
-	cJSON	*origin_country;
-	cJSON	*time_position;
-	cJSON	*last_contact;
-	cJSON	*longitude;
-}		t_cJSON;
-
 void	parse_opensky_data(const char *json_string, t_central *central);
+
 #endif
