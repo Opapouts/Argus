@@ -12,7 +12,7 @@ void	graph_setup(Camera3D *camera)
 	camera->projection = CAMERA_PERSPECTIVE;
 }
 
-void	plane_setup(t_plane *first_plane)
+void	draw_planes(t_plane *first_plane)
 {
 	t_plane *tmp = first_plane;
 
@@ -22,7 +22,7 @@ void	plane_setup(t_plane *first_plane)
 				tmp->position.latitude,
 				tmp->position.longitude,
 				tmp->position.geo_altitude);
-		DrawSphere(plane_pos, 0.05f, RED);
+		DrawSphere(plane_pos, 0.01f, RED);
 		tmp = tmp->next;
 	}
 }

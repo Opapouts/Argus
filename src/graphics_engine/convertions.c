@@ -10,7 +10,7 @@ Vector3	convertGPSinto3D(float lat, float lon, float altitude)
 
 	if (altitude < 0)
 		altitude = 0;
-	float	r = EARTH_RADIUS + (altitude + ALTITUDE_SCALE);
+	float	r = EARTH_RADIUS + (altitude * ALTITUDE_SCALE);
 
 	pos.y = r * sinf(latRad);
 	pos.x = r * cosf(latRad) * cosf(lonRad);

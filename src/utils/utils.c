@@ -1,4 +1,5 @@
 #include "../../includes/core.h"
+#include <stdlib.h>
 
 void	custom_write(char *str)
 {

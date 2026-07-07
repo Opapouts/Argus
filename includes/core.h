@@ -54,7 +54,7 @@ typedef	struct	s_plane
 typedef	struct	s_central
 {
 	t_plane		*planes;
-	t_memory	*memory;//Pas necessaire pour l'instant
+	char		*json_str;
 }		t_central;
 
 //Custom functions
