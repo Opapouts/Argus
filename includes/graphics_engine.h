@@ -9,7 +9,6 @@
 #define SCRAPE_INTERVAL 10.0
 #include "../vendor/raylib/src/raylib.h"
 #include "core.h"
-#include <math.h>
 
 
 void	graph_setup(Camera3D *camera);

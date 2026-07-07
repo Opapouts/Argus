@@ -1,11 +1,10 @@
 #include "vendor/raylib/src/raylib.h"
 #include "includes/graphics_engine.h"
-#include "includes/data_ingestion.h"
 
+//We should finish with this by the end of the day
 int  main(void)
 {
 	t_central central;
-// 1. Setup the Camera (Before the while loop)
 	Camera3D camera = {0};
 	graph_setup(&camera);
 

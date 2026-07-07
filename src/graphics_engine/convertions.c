@@ -1,4 +1,5 @@
 #include "../../includes/graphics_engine.h"
+#include <math.h>
 
 Vector3	convertGPSinto3D(float lat, float lon, float altitude)
 {

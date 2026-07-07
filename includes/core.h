@@ -1,9 +1,8 @@
 #ifndef CORE_H
 #define CORE_H
-#include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include <string.h>
+#include <unistd.h>
 
 typedef	struct	s_memory
 {
@@ -57,5 +56,9 @@ typedef	struct	s_central
 	t_plane		*planes;
 	t_memory	*memory;//Pas necessaire pour l'instant
 }		t_central;
+
+//Custom functions
+void	custom_write(char *str);
+void	custom_free(void *ptr);
 
 #endif

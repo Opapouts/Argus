@@ -1,7 +1,6 @@
 #include "../../includes/data_ingestion.h"
 #include "../../vendor/cJSON/cJSON.h"
-#include "../../includes/utils.h"
-#include "../../vendor/local_curl/include/curl/curl.h"
+#include <string.h>
 
 //Example of output of the OpenSky API
 //{
@@ -93,19 +92,7 @@ void	parse_opensky_data(const char *json_string, t_central *central)
 	cJSON_Delete(root);
 }
 
-/*static void	print_things(t_central *central)
-{
-	t_plane	*tmp;
-
-	tmp = central->planes;
-	while (tmp)
-	{
-		printf("icao24-> %s ||| callsign-> %s ||| velocity-> %f\n", tmp->identity.icao24, tmp->identity.callsign, tmp->movement.velocity);
-		tmp = tmp->next;
-	}
-}*/
-
-static void	free_planes(t_plane *plane)
+/*static void	free_planes(t_plane *plane)
 {
 	t_plane *tmp = plane;
 	while (tmp)
@@ -114,21 +101,4 @@ static void	free_planes(t_plane *plane)
 		free(tmp);
 		tmp = plane;
 	}
-}
-
-
-int	main(void)
-{
-	char	*data;
-	t_central	central;
-
-	central.planes = NULL;
-	curl_global_init(CURL_GLOBAL_DEFAULT);
-	data = webscrape();
-	parse_opensky_data(data, &central);
-	//print_things(&central);
-	free_planes(central.planes);
-	free(data);
-	curl_global_cleanup();
-	return (0);
-}
+}*/

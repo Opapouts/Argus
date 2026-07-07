@@ -1,4 +1,6 @@
 #include "../../includes/data_ingestion.h"
+#include <stdlib.h>
+#include <string.h>
 
 static void	set_plane_to_null(t_plane *plane)
 {

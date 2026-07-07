@@ -1,6 +1,7 @@
-#include "../../includes/data_ingestion.h"
-#include "../../includes/utils.h"
+#include "../../includes/core.h"
 #include "../../vendor/local_curl/include/curl/curl.h"
+#include <stdlib.h>
+#include <string.h>
 
 /*
  *contents ->the data returned from the request
@@ -26,7 +27,7 @@ static size_t	callback(void *contents, size_t size, size_t n, void *userp) {
 	mem->data[mem->size] = 0;
 	return (real_size);
 }
-
+//We should maybe fix that, to store the char * in the central struct
 char	*webscrape(void) {
 	CURL	*curl = curl_easy_init();
 	if (!curl)
@@ -44,7 +45,7 @@ char	*webscrape(void) {
 	curl_easy_cleanup(curl);
 	if (res != CURLE_OK)
 	{
-		free(chunk.data);
+		custom_free(chunk.data);
 		fprintf(stderr, "curl_easy_perform() error: %s\n", curl_easy_strerror(res));
 		return (NULL);
 	}
