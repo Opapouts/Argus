@@ -13,7 +13,8 @@
 void	graph_setup(Camera3D *camera);
 void	draw_planes(t_plane *first_plane);
 void	update_camera(Camera3D *camera);
-Vector3	convertGPSinto3D(float lat, float lon, float altitude);
+Vector3	convertGPSinto3D(Vector3 gps);
+void	place_dot_on_map(Vector3 position, Color color);
 
 
 #endif

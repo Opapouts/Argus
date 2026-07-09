@@ -9,9 +9,12 @@ int  main(void)
 
 	graph_setup(&camera);
 
-	Mesh		earthMesh = GenMeshSphere(4.0f, 32, 32);
+	Mesh		earthMesh = GenMeshSphere(4.0f, 128, 128);
 	Model		earthModel = LoadModelFromMesh(earthMesh);
-	Texture2D	earthTexture = LoadTexture("src/graphics_engine/assets/day_earth.png");
+	Image		earthImage = LoadImage("src/graphics_engine/assets/day_earth.png");
+	ImageFlipHorizontal(&earthImage);//The map was inverted
+	Texture2D	earthTexture = LoadTextureFromImage(earthImage);
+	UnloadImage(earthImage);
 	earthModel.materials[0].maps[MATERIAL_MAP_ALBEDO].texture = earthTexture;
 
 	//We need to webscrape once and parse in the central struct
@@ -28,7 +31,12 @@ int  main(void)
 		ClearBackground(BLACK);
 		BeginMode3D(camera);
 		DrawModel(earthModel, (Vector3){0.0f, 0.0f, 0.0f}, 1.0f, WHITE);
-		draw_planes(central.planes);
+		//draw_planes(central.planes);
+		/*
+		place_dot_on_map((Vector3){51.5f, 0.0f, 0}, RED); //London
+		place_dot_on_map((Vector3){40.7f, -74.0f, 0}, GREEN); //New York
+		place_dot_on_map((Vector3){35.7f, 139.7f, 0}, YELLOW); //Tokyo
+		*/
 		EndMode3D();
 		DrawText("Live 3D Global Radar", 20, 20, 20, LIGHTGRAY);
 		EndDrawing();

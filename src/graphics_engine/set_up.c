@@ -18,11 +18,18 @@ void	draw_planes(t_plane *first_plane)
 
 	while (tmp)
 	{
-		Vector3 plane_pos = convertGPSinto3D(
+		Vector3 plane_pos = convertGPSinto3D((Vector3){
 				tmp->position.latitude,
 				tmp->position.longitude,
-				tmp->position.geo_altitude);
-		DrawSphere(plane_pos, 0.01f, RED);
+				tmp->position.geo_altitude});
+		if (!tmp->movement.on_ground)
+			DrawSphere(plane_pos, 0.01f, RED);
 		tmp = tmp->next;
 	}
+}
+
+void	place_dot_on_map(Vector3 position, Color color)
+{
+	Vector3 place = convertGPSinto3D(position);
+	DrawSphere(place, 0.2f, color);
 }
