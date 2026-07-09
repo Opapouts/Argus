@@ -31,7 +31,7 @@ int  main(void)
 		ClearBackground(BLACK);
 		BeginMode3D(camera);
 		DrawModel(earthModel, (Vector3){0.0f, 0.0f, 0.0f}, 1.0f, WHITE);
-		//draw_planes(central.planes);
+		draw_planes(central.planes);
 		/*
 		place_dot_on_map((Vector3){51.5f, 0.0f, 0}, RED); //London
 		place_dot_on_map((Vector3){40.7f, -74.0f, 0}, GREEN); //New York
@@ -41,9 +41,7 @@ int  main(void)
 		DrawText("Live 3D Global Radar", 20, 20, 20, LIGHTGRAY);
 		EndDrawing();
 	}
-	UnloadTexture(earthTexture);
-	UnloadModel(earthModel);
-	CloseWindow();
+	cleanup(&earthTexture, &earthModel); //We should look into that
 	free_planes(central.planes);
 	return (0);
 }

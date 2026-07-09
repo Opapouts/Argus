@@ -33,3 +33,10 @@ void	place_dot_on_map(Vector3 position, Color color)
 	Vector3 place = convertGPSinto3D(position);
 	DrawSphere(place, 0.2f, color);
 }
+//Not sure about this function, there is for sure a better way to handle this
+void	cleanup(Texture2D *earthTexture, Model *earthModel)
+{
+	UnloadTexture(*earthTexture);
+	UnloadModel(*earthModel);
+	CloseWindow();
+}

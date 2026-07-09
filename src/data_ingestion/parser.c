@@ -61,7 +61,7 @@ static void	fill_out_plane_fields(cJSON *flight, t_plane *list)
 	list->movement.vertical_rate = (float)extract_double_safe(flight, 11, 0.0);
 }
 
-void	parse_opensky_data(const char *json_string, t_central *central)
+static void	parse_opensky_data(const char *json_string, t_central *central)
 {
 	cJSON	*root;
 
